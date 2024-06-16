@@ -1,0 +1,22 @@
+[2.397s] Invoking command in '/home/tarun_56/lmas_ws/build/ball_tracker': PYTHONPATH=/home/tarun_56/lmas_ws/build/ball_tracker/prefix_override:/home/tarun_56/lmas_ws/install/ball_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/tarun_56/lmas_ws/build/ball_tracker/build --no-deps symlink_data
+[2.888s] /home/tarun_56/.local/lib/python3.10/site-packages/setuptools/dist.py:717: UserWarning: Usage of dash-separated 'script-dir' will not be supported in future versions. Please use the underscore name 'script_dir' instead
+[2.888s]   warnings.warn(
+[2.989s] running develop
+[3.346s] running egg_info
+[3.346s] writing ball_tracker.egg-info/PKG-INFO
+[3.346s] writing dependency_links to ball_tracker.egg-info/dependency_links.txt
+[3.346s] writing entry points to ball_tracker.egg-info/entry_points.txt
+[3.346s] writing requirements to ball_tracker.egg-info/requires.txt
+[3.347s] writing top-level names to ball_tracker.egg-info/top_level.txt
+[3.350s] reading manifest file 'ball_tracker.egg-info/SOURCES.txt'
+[3.351s] writing manifest file 'ball_tracker.egg-info/SOURCES.txt'
+[3.356s] running build_ext
+[3.356s] Creating /home/tarun_56/lmas_ws/install/ball_tracker/lib/python3.10/site-packages/ball-tracker.egg-link (link to .)
+[3.357s] Installing detect_ball script to /home/tarun_56/lmas_ws/install/ball_tracker/lib/ball_tracker
+[3.360s] Installing detect_ball_3d script to /home/tarun_56/lmas_ws/install/ball_tracker/lib/ball_tracker
+[3.360s] Installing detect_robot_exe script to /home/tarun_56/lmas_ws/install/ball_tracker/lib/ball_tracker
+[3.360s] Installing follow_ball script to /home/tarun_56/lmas_ws/install/ball_tracker/lib/ball_tracker
+[3.360s] 
+[3.360s] Installed /home/tarun_56/lmas_ws/build/ball_tracker
+[3.360s] running symlink_data
+[3.457s] Invoked command in '/home/tarun_56/lmas_ws/build/ball_tracker' returned '0': PYTHONPATH=/home/tarun_56/lmas_ws/build/ball_tracker/prefix_override:/home/tarun_56/lmas_ws/install/ball_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/tarun_56/lmas_ws/build/ball_tracker/build --no-deps symlink_data
