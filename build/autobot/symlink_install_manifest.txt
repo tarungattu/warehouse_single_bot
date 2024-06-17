@@ -46,6 +46,7 @@
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/worlds/test.world
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/worlds/track.world
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/worlds/warehouse.world
+/home/tarun_56/lmas_ws/install/autobot/share/autobot/worlds/warehouse0.world
 /home/tarun_56/lmas_ws/install/autobot/share/ament_index/resource_index/package_run_dependencies/autobot
 /home/tarun_56/lmas_ws/install/autobot/share/ament_index/resource_index/parent_prefix_path/autobot
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/environment/ament_prefix_path.sh

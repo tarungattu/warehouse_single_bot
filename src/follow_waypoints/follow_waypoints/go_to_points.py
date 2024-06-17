@@ -28,11 +28,9 @@ from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 
 json_file_path = '/home/tarun_56/lmas_ws/src/JobShopGA/amr_data.json'
 
-
-class Go_to_points:
-    def __init__(self):
-        self.amr1_sequence = []
-        self.amr1_ptimes = []
+class Perceptual_schema:
+    def __init__(self, json_file):
+        self.json_file = json_file
 
     def parse_json(self, json_file):
         with open(json_file, 'r') as file:
@@ -67,34 +65,37 @@ class Go_to_points:
         self.amr1_ptimes = amr1_ptimes
         return amr1_sequence, amr1_ptimes
     
-    def start_execution(self):
+class Motor_schema:
+    def __init__(self):
+        # self.amr1_sequence = machine_sequence
+        # self.amr1_ptimes = ptime_sequence
+        self.m1 = [-3.32, 6.65]
+        self.m2 = [-3.38, 1.46]
+        self.m3 = [1.627, 6.459]
+        self.m4 = [1.681, 1.407]
+        self.loading_dock = [-6.69, 4.028]
+        self.unloading_dock = [3.52, 3.96]
+        self.poses = {
+            '0': self.m1,
+            '1': self.m2,
+            '2': self.m3,
+            '3': self.m4,
+            '-1': self.loading_dock,
+            '-2': self.unloading_dock
+        }
+    
+    def start_execution(self, amr1_sequence, amr1_ptimes):
         rclpy.init()
 
         navigator = BasicNavigator()
 
-        m1 = [-3.32, 6.65]
-        m2 = [-3.38, 1.46]
-        m3 = [1.627, 6.459]
-        m4 = [1.681, 1.407]
-        loading_dock = [-6.69, 4.028]
-        unloading_dock = [3.52, 3.96]
-
-        poses = {
-            '0': m1,
-            '1': m2,
-            '2': m3,
-            '3': m4,
-            '-1': loading_dock,
-            '-2': unloading_dock
-        }
-
         inspection_route = []
         # json_file_path = '/home/tarun_56/pc_ws/src/JobShopGA/amr_data.json'
         # sequence, ptimes = self.parse_json(json_file_path)
-        sequence, ptimes = self.amr1_sequence, self.amr1_ptimes
+        sequence, ptimes = amr1_sequence, amr1_ptimes
 
         for m in sequence:
-            inspection_route.append(poses[str(m)])
+            inspection_route.append(self.poses[str(m)])
 
         # Set our demo's initial pose
         # initial_pose = PoseStamped()
@@ -116,8 +117,8 @@ class Go_to_points:
             goal_pose = PoseStamped()
             goal_pose.header.frame_id = 'map'
             goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-            goal_pose.pose.position.x = poses[str(m)][0]
-            goal_pose.pose.position.y = poses[str(m)][1]
+            goal_pose.pose.position.x = self.poses[str(m)][0]
+            goal_pose.pose.position.y = self.poses[str(m)][1]
             goal_pose.pose.orientation.w = 1.0
 
             navigator.goToPose(goal_pose)
@@ -159,6 +160,27 @@ class Go_to_points:
         # navigator.goToPose(initial_pose)
         # while not navigator.isTaskComplete():
         #     pass
+    
+
+class Go_to_points:
+    def __init__(self, perceptual_schema, motor_schema):
+        self.json_file = json_file_path
+        self.perceptual_schema = perceptual_schema
+        self.motor_schema = motor_schema
+        self.running = False
+
+    def start_behaviour(self):
+        self.running = True
+
+        while self.running:
+            machine_sequence, ptime_sequence = self.perceptual_schema.parse_json(self.json_file)
+
+            self.motor_schema.start_execution(machine_sequence, ptime_sequence)
+
+    def stop(self):
+        self.running = False
+
+
 
 
 class JSONFileHandler(FileSystemEventHandler):
@@ -192,9 +214,18 @@ def on_json_update(data):
     print("JSON file updated with new values:")
     print(data)
     # You can put the main execution code here or continue in another function
-    go_to_points = Go_to_points()
-    go_to_points.parse_json(json_file_path)
-    go_to_points.start_execution()  # Call the main execution function
+
+    perceptual_schema = Perceptual_schema(json_file_path)
+
+    motor_schema = Motor_schema()
+
+    go_to_points = Go_to_points(perceptual_schema, motor_schema)
+
+    go_to_points.start_behaviour()
+
+      # Call the main execution function
+
+    go_to_points.stop()
 
 def main():
     

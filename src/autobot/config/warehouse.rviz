@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Camera1/Visibility1
+        - /Path1
       Splitter Ratio: 0.5
     Tree Height: 543
   - Class: rviz_common/Selection
@@ -265,7 +266,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /local_plan
+        Value: /received_global_plan
       Value: true
   Enabled: true
   Global Options:
@@ -320,9 +321,9 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.8152571320533752
-        Y: -0.8712005019187927
-        Z: -0.23029425740242004
+        X: -1.0375622510910034
+        Y: 2.640524387359619
+        Z: 0.44779500365257263
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
