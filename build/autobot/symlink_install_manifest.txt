@@ -29,6 +29,7 @@
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/joystick.launch.py
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/launch_robot.launch.py
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/launch_sim.launch.py
+/home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/lmas_launch.py
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/localization_launch.py
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/main_two_robots.launch.xml
 /home/tarun_56/lmas_ws/install/autobot/share/autobot/launch/map_filters_launch.py

@@ -26,162 +26,39 @@ from watchdog.events import FileSystemEventHandler
 #
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 
-json_file_path = '/home/tarun_56/lmas_ws/src/JobShopGA/amr_data.json'
 
-class Perceptual_schema:
-    def __init__(self, json_file):
-        self.json_file = json_file
 
-    def parse_json(self, json_file):
-        with open(json_file, 'r') as file:
-            data = json.load(file)
-            
-        machine_sequences = []
-        ptime_sequences = []
+#
+def parse_json(json_file):
+    with open(json_file, 'r') as file:
+        data = json.load(file)
         
-        new_machine_sequences = []
-        new_ptime_sequences = []
+    machine_sequences = []
+    ptime_sequences = []
+    
+    new_machine_sequences = []
+    new_ptime_sequences = []
+    
         
-            
-        for amr in data['amr_list']:
-            machine_sequences.append(amr['machine_sequence'])
-            ptime_sequences.append(amr['ptime_sequence'])
-            
-        for machines, ptimes in zip(machine_sequences, ptime_sequences):
-            new_machines = []
-            new_ptimes = []
-            for machine, ptime in zip(machines, ptimes):
-                if ptime != 0:
-                    new_machines.append(machine)
-                    new_ptimes.append(ptime)
-            new_machine_sequences.append(new_machines)
-            new_ptime_sequences.append(new_ptimes)
+    for amr in data['amr_list']:
+        machine_sequences.append(amr['machine_sequence'])
+        ptime_sequences.append(amr['ptime_sequence'])
         
-        print(machine_sequences, ptime_sequences)
-        print(new_machine_sequences, new_ptime_sequences)
-        amr1_sequence = new_machine_sequences[0]
-        amr1_ptimes = new_ptime_sequences[0]
-        self.amr1_sequence = amr1_sequence
-        self.amr1_ptimes = amr1_ptimes
-        return amr1_sequence, amr1_ptimes
+    for machines, ptimes in zip(machine_sequences, ptime_sequences):
+        new_machines = []
+        new_ptimes = []
+        for machine, ptime in zip(machines, ptimes):
+            if ptime != 0:
+                new_machines.append(machine)
+                new_ptimes.append(ptime)
+        new_machine_sequences.append(new_machines)
+        new_ptime_sequences.append(new_ptimes)
     
-class Motor_schema:
-    def __init__(self):
-        # self.amr1_sequence = machine_sequence
-        # self.amr1_ptimes = ptime_sequence
-        self.m1 = [-3.32, 6.65]
-        self.m2 = [-3.38, 1.46]
-        self.m3 = [1.627, 6.459]
-        self.m4 = [1.681, 1.407]
-        self.loading_dock = [-6.69, 4.028]
-        self.unloading_dock = [3.52, 3.96]
-        self.poses = {
-            '0': self.m1,
-            '1': self.m2,
-            '2': self.m3,
-            '3': self.m4,
-            '-1': self.loading_dock,
-            '-2': self.unloading_dock
-        }
-    
-    def start_execution(self, amr1_sequence, amr1_ptimes):
-        rclpy.init()
-
-        navigator = BasicNavigator()
-
-        inspection_route = []
-        # json_file_path = '/home/tarun_56/pc_ws/src/JobShopGA/amr_data.json'
-        # sequence, ptimes = self.parse_json(json_file_path)
-        sequence, ptimes = amr1_sequence, amr1_ptimes
-
-        for m in sequence:
-            inspection_route.append(self.poses[str(m)])
-
-        # Set our demo's initial pose
-        # initial_pose = PoseStamped()
-        # initial_pose.header.frame_id = 'map'
-        # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-        # initial_pose.pose.position.x = -0.004
-        # initial_pose.pose.position.y = -0.041
-        # initial_pose.pose.orientation.z = 1.0
-        # initial_pose.pose.orientation.w = 0.0
-        # navigator.setInitialPose(initial_pose)
-
-        # Wait for navigation to fully activate
-        # navigator.waitUntilNav2Active()
-
-        # while rclpy.ok():
-
-        # Send our route
-        for i,m in zip(range(len(sequence)),sequence):
-            goal_pose = PoseStamped()
-            goal_pose.header.frame_id = 'map'
-            goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-            goal_pose.pose.position.x = self.poses[str(m)][0]
-            goal_pose.pose.position.y = self.poses[str(m)][1]
-            goal_pose.pose.orientation.w = 1.0
-
-            navigator.goToPose(goal_pose)
-            if m >= 0:
-                print(f'Going to machine {m}')
-            elif m == -1:
-                print('Going to Loading dock for next job')
-            elif m == -2:
-                print('Going to unloading dock to drop completed job')
-            while not navigator.isTaskComplete():
-                time.sleep(1)
-            
-            print(f'job being process for time {ptimes[i]} seconds')
-            time.sleep(ptimes[i])
-
-
-
-        # Do something during our route (e.x. AI to analyze stock information or upload to the cloud)
-        # Simply print the current waypoint ID for the demonstration
-        # i = 0
-        # while not navigator.isTaskComplete():
-        #     i += 1
-        #     feedback = navigator.getFeedback()
-        #     if feedback and i % 5 == 0:
-        #         print('Executing current waypoint: ' +
-        #               str(feedback.current_waypoint + 1) + '/' + str(len(sequence)))
-
-        result = navigator.getResult()
-        if result == TaskResult.SUCCEEDED:
-            print('Inspection of shelves complete! Returning to start...')
-        elif result == TaskResult.CANCELED:
-            print('Inspection of shelving was canceled. Returning to start...')
-            exit(1)
-        elif result == TaskResult.FAILED:
-            print('Inspection of shelving failed! Returning to start...')
-
-        # Uncomment to go back to start
-        # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-        # navigator.goToPose(initial_pose)
-        # while not navigator.isTaskComplete():
-        #     pass
-    
-
-class Go_to_points:
-    def __init__(self, perceptual_schema, motor_schema):
-        self.json_file = json_file_path
-        self.perceptual_schema = perceptual_schema
-        self.motor_schema = motor_schema
-        self.running = False
-
-    def start_behaviour(self):
-        self.running = True
-
-        while self.running:
-            machine_sequence, ptime_sequence = self.perceptual_schema.parse_json(self.json_file)
-
-            self.motor_schema.start_execution(machine_sequence, ptime_sequence)
-
-    def stop(self):
-        self.running = False
-
-
-
+    print(machine_sequences, ptime_sequences)
+    print(new_machine_sequences, new_ptime_sequences)
+    amr1_sequence = new_machine_sequences[0]
+    amr1_ptimes = new_ptime_sequences[0]
+    return amr1_sequence, amr1_ptimes
 
 class JSONFileHandler(FileSystemEventHandler):
     def __init__(self, file_path, callback):
@@ -215,23 +92,104 @@ def on_json_update(data):
     print(data)
     # You can put the main execution code here or continue in another function
 
-    perceptual_schema = Perceptual_schema(json_file_path)
+    start_execution(data)  # Call the main execution function
+#
+def start_execution(data):
+    rclpy.init()
 
-    motor_schema = Motor_schema()
+    navigator = BasicNavigator()
 
-    go_to_points = Go_to_points(perceptual_schema, motor_schema)
+    m1 = [-3.32, 6.65]
+    m2 = [-3.38, 1.46]
+    m3 = [1.627, 6.459]
+    m4 = [1.681, 1.407]
+    loading_dock = [-6.69, 4.028]
+    unloading_dock = [3.52, 3.96]
 
-    go_to_points.start_behaviour()
+    poses = {
+        '0': m1,
+        '1': m2,
+        '2': m3,
+        '3': m4,
+        '-1': loading_dock,
+        '-2': unloading_dock
+    }
 
-      # Call the main execution function
+    inspection_route = []
+    json_file_path = '/home/tarun_56/lmas_ws/src/JS_tt/JobShopGA/amr_data.json'
+    sequence, ptimes = parse_json(json_file_path)
 
-    go_to_points.stop()
+    for m in sequence:
+        inspection_route.append(poses[str(m)])
 
+    # Set our demo's initial pose
+    # initial_pose = PoseStamped()
+    # initial_pose.header.frame_id = 'map'
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # initial_pose.pose.position.x = -0.004
+    # initial_pose.pose.position.y = -0.041
+    # initial_pose.pose.orientation.z = 1.0
+    # initial_pose.pose.orientation.w = 0.0
+    # navigator.setInitialPose(initial_pose)
+
+    # Wait for navigation to fully activate
+    # navigator.waitUntilNav2Active()
+
+    # while rclpy.ok():
+
+    # Send our route
+    for i,m in zip(range(len(sequence)),sequence):
+        goal_pose = PoseStamped()
+        goal_pose.header.frame_id = 'map'
+        goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+        goal_pose.pose.position.x = poses[str(m)][0]
+        goal_pose.pose.position.y = poses[str(m)][1]
+        goal_pose.pose.orientation.w = 1.0
+
+        navigator.goToPose(goal_pose)
+        if m >= 0:
+            print(f'Going to machine {m}')
+        elif m == -1:
+            print('Going to Loading dock for next job')
+        elif m == -2:
+            print('Going to unloading dock to drop completed job')
+        while not navigator.isTaskComplete():
+            time.sleep(1)
+        
+        print(f'job being process for time {ptimes[i]} seconds')
+        time.sleep(ptimes[i])
+
+
+
+    # Do something during our route (e.x. AI to analyze stock information or upload to the cloud)
+    # Simply print the current waypoint ID for the demonstration
+    # i = 0
+    # while not navigator.isTaskComplete():
+    #     i += 1
+    #     feedback = navigator.getFeedback()
+    #     if feedback and i % 5 == 0:
+    #         print('Executing current waypoint: ' +
+    #               str(feedback.current_waypoint + 1) + '/' + str(len(sequence)))
+
+    result = navigator.getResult()
+    if result == TaskResult.SUCCEEDED:
+        print('Inspection of shelves complete! Returning to start...')
+    elif result == TaskResult.CANCELED:
+        print('Inspection of shelving was canceled. Returning to start...')
+        exit(1)
+    elif result == TaskResult.FAILED:
+        print('Inspection of shelving failed! Returning to start...')
+
+    # Uncomment to go back to start
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # navigator.goToPose(initial_pose)
+    # while not navigator.isTaskComplete():
+    #     pass
+
+#
 def main():
-    
-    
     print('go to points is being executed')
-    
+    json_file_path = '/home/tarun_56/lmas_ws/src/JS_tt/JobShopGA/amr_data.json'
     wait_for_json_update(json_file_path, on_json_update)
 #
 if __name__ == '__main__':

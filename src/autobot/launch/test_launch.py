@@ -43,7 +43,7 @@ def generate_launch_description():
     # Define initial position and orientation
     initial_pose = {
         'x': '-6.88',
-        'y': '3.227',
+        'y': '3.33',
         'z': '0.0',
         'roll': '0.0',
         'pitch': '0.0',

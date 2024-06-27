@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Camera1/Visibility1
+        - /Map1
         - /Path1
       Splitter Ratio: 0.5
     Tree Height: 543
@@ -221,7 +222,7 @@ Visualization Manager:
       Zoom Factor: 1
     - Alpha: 0.699999988079071
       Class: rviz_default_plugins/Map
-      Color Scheme: map
+      Color Scheme: costmap
       Draw Behind: false
       Enabled: true
       Name: Map
@@ -329,10 +330,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3797961473464966
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.693580150604248
+      Yaw: 4.638579845428467
     Saved: ~
 Window Geometry:
   Camera:
