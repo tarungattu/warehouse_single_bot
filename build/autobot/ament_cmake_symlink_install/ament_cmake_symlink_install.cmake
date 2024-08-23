@@ -310,8 +310,8 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install(DIRECTORY "config" "description" "launch" "worlds" "DESTINATION" "share/autobot")
-ament_cmake_symlink_install_directory("/home/tarun_56/lmas_ws/src/autobot" DIRECTORY "config" "description" "launch" "worlds" "DESTINATION" "share/autobot")
+# install(DIRECTORY "config" "description" "launch" "worlds" "urdf" "meshes" "DESTINATION" "share/autobot")
+ament_cmake_symlink_install_directory("/home/tarun_56/lmas_ws/src/autobot" DIRECTORY "config" "description" "launch" "worlds" "urdf" "meshes" "DESTINATION" "share/autobot")
 
 # install(FILES "/home/tarun_56/lmas_ws/build/autobot/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/autobot" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 ament_cmake_symlink_install_files("/home/tarun_56/lmas_ws/src/autobot" FILES "/home/tarun_56/lmas_ws/build/autobot/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/autobot" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
