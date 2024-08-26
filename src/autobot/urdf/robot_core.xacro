@@ -116,7 +116,7 @@
  <link name="castor_wheels">
     <inertial>
         <origin xyz="5.5511E-17 7.6762E-16 4.1633E-17" rpy="0 0 0" />
-        <mass value="0.3" />
+        <mass value="0.4" />
         <inertia ixx="9.1441E-05" ixy="1.239E-18" ixz="3.9667E-21" iyy="0.00018051" iyz="-1.6989E-19" izz="9.1441E-05" />
     </inertial>
     <visual>
@@ -156,59 +156,7 @@
 </joint>
 
 
-  <link
-    name="lidar">
-    <inertial>
-      <origin
-        xyz="-0.002361 -1.4968E-05 0.019299"
-        rpy="0 0 0" />
-      <mass
-        value="0.16538" />
-      <inertia
-        ixx="7.8866E-05"
-        ixy="4.8738E-08"
-        ixz="2.1848E-06"
-        iyy="7.519E-05"
-        iyz="2.8958E-08"
-        izz="0.00010995" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://autobot/meshes/lidar.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 0.4" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://autobot/meshes/lidar.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="lidar_joint"
-    type="fixed">
-    <origin
-      xyz="0.063868 0.006608 0.050657"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="lidar" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+  
   <link
     name="camera">
     <inertial>
